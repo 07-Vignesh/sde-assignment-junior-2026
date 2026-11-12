@@ -1,5 +1,6 @@
 import re
 from decimal import Decimal, ROUND_HALF_UP
+from datetime import datetime, timedelta, timezone
 
 MONTHS = {m: i for i, m in enumerate(
     ["jan", "feb", "mar", "apr", "may", "jun",
@@ -61,3 +62,19 @@ def norm_enum(raw, allowed):
     """Case-insensitive match against allowed values; stored lower-case."""
     s = (raw or "").strip().lower()
     return s if s in allowed else None
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def parse_ts(raw):
+    """Parse Z / +05:30 / naive (naive = IST). Return a fixed-width UTC string,
+    e.g. '2026-10-05T13:20:21.000000Z', or None if it can't be parsed.
+    Fixed width means plain string sorting is also time sorting."""
+    if not isinstance(raw, str):
+        return None
+    try:
+        dt = datetime.fromisoformat(raw.strip())
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=IST)
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
