@@ -1,9 +1,9 @@
 # Submission
 
 ## Candidate
-- **Name:** <<your name>>
+- **Name:** Vikneshwaran
 - **Assignment chosen:** A (Data)
-- **Time spent (honest estimate):** <<e.g. 8h>>
+- **Time spent (honest estimate):** about 5h
 
 ## How to run
 ```bash
@@ -79,15 +79,15 @@ Python standard library plus `cryptography`, with SQLite storage. **Ingestion on
   - A lead file with a header that matches no schema fields rejects every row, with no warning.
 
 ## Testing
-- **Tested**: <<N>> tests covering phone formats, dates (day-first, impossible), decimals, headers, enums, timestamps across the IST date boundary, effective disposition, bucket logic, rejection and warning counts, merge order, event dedupe across drops, append-only triggers, orphans resolving when a lead arrives, report content, PII absence and the CLI.
-- `check_idempotency.py` compares report files byte for byte for: (A) re-ingesting everything, (B) events ingested before leads, (C) baseline. Result: <<paste the three lines>>.
-- **Not tested**: a second seed, the large data set, concurrent runs, and a crash in the middle of a drop.
+- **Tested**: 50 tests covering tests covering phone formats, dates (day-first, impossible), decimals, headers, enums, timestamps across the IST date boundary, effective disposition, bucket logic, rejection and warning counts, merge order, event dedupe across drops, append-only triggers, orphans resolving when a lead arrives, report content, PII absence and the CLI.
+- `check_idempotency.py` compares report files byte for byte for: (A) re-ingesting everything, (B) events ingested before leads, (C) baseline. Result: Result: A (re-ingest everything) == baseline: True; B (events before leads) == baseline: True; CLI reports/ == baseline: True.
+- **Not tested**: the large data set, concurrent runs, and a crash in the middle of a drop.
 
 ## Results
 - Small data set (seed 42): 2057 lead rows, 108 rejected, 57 duplicates merged, 1892 leads, 8745 event lines (8 malformed, 237 duplicates), 462 orphans, 18 unknown dispositions.
 - Report totals agree: 1892 leads in both `lead_report` and `batch_summary`, 2536 calls in both `lead_report` and `daily_overview`.
-- Performance: <<Not attempted, or paste timings if you run `--scale large`>>.
-
+- Performance: not attempted (large data set not run).
+- Seed 7 (small): ran cleanly with a fresh database. 1886 leads, 2544 calls, report totals consistent across files, re-ingest skipped every file.
 ## If I had another day
 1. Compare sha256 to detect changed files.
 2. Run on a second seed and on the large set, then move aggregation into SQL.
