@@ -66,6 +66,8 @@ Python standard library plus `cryptography`, with SQLite storage. **Ingestion on
 | Events without `call_id` cannot join a call | Calls are grouped by call_id | Group by phone |
 | `batch_summary.csv` lists only batches with at least one lead | A fully rejected batch has no leads to count | Emit all-zero rows |
 | Files identified by drop name and path, not content | Simple and predictable | Identify by sha256 |
+| Code in repo root (`pipeline/`, `tests/`) instead of `solution/` | README allows "a similar top-level folder"; keeps imports and commands simple | Move everything into `solution/` |
+The repo is public because the submission form asks for a publicly accessible link.
 
 ## Failure modes considered
 - **Bad input**: blank rows, missing fields, invalid phones, impossible dates and non-numeric amounts are handled per spec. Malformed JSON lines are counted, not fatal.
